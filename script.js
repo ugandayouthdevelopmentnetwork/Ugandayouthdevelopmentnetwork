@@ -123,17 +123,24 @@
   function openAssistant() {
     assistantWidget.classList.remove('hidden');
     assistantToggle.style.display = 'none';
+    assistantInput.focus();
   }
 
   function closeAssistant() {
     assistantWidget.classList.add('hidden');
     assistantToggle.style.display = 'flex';
     stopSpeech();
+    stopVoiceCapture();
   }
 
   function minimizeAssistant() {
-    assistantWidget.classList.toggle('hidden');
-    assistantToggle.style.display = 'flex';
+    if (assistantWidget.classList.contains('hidden')) {
+      assistantWidget.classList.remove('hidden');
+      assistantToggle.style.display = 'none';
+    } else {
+      assistantWidget.classList.add('hidden');
+      assistantToggle.style.display = 'flex';
+    }
   }
 
   function getAnswerFromKnowledge(question) {
@@ -225,7 +232,7 @@
     };
 
     recognition.onerror = () => {
-      addMessage('Microphone could not be used right now. Please try again or type your question.', 'system');
+      addMessage('Microphone permission was denied or unavailable. Please try again or type your question.', 'system');
       stopVoiceCapture();
     };
 
@@ -243,7 +250,11 @@
 
   function stopVoiceCapture() {
     if (recognition) {
-      recognition.stop();
+      try {
+        recognition.stop();
+      } catch (error) {
+        // ignore repeated stop calls
+      }
     }
     isListening = false;
     voiceToggleBtn.classList.remove('listening');
@@ -280,10 +291,7 @@
 
   assistantToggle.addEventListener('click', openAssistant);
   closeBtn.addEventListener('click', closeAssistant);
-  minimizeBtn.addEventListener('click', () => {
-    assistantWidget.classList.add('hidden');
-    assistantToggle.style.display = 'flex';
-  });
+  minimizeBtn.addEventListener('click', minimizeAssistant);
 
   sendBtn.addEventListener('click', sendCurrentQuestion);
   assistantInput.addEventListener('keydown', (event) => {
@@ -328,11 +336,15 @@
   let dragY = 0;
   let isDragging = false;
 
-  document.getElementById('uydnetAssistantHeader').addEventListener('pointerdown', (event) => {
-    isDragging = true;
-    dragX = event.clientX;
-    dragY = event.clientY;
-  });
+  const header = document.getElementById('uydnetAssistantHeader');
+  if (header) {
+    header.addEventListener('pointerdown', (event) => {
+      isDragging = true;
+      dragX = event.clientX;
+      dragY = event.clientY;
+      header.setPointerCapture?.(event.pointerId);
+    });
+  }
 
   document.addEventListener('pointermove', (event) => {
     if (!isDragging) return;
