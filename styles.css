@@ -1,26 +1,94 @@
 /* UYDNet Royal Emerald and Gold visual theme. */
 :root{--royal:#0a2d1f;--emerald:#0f6549;--green:#16835d;--gold:#d4af59;--gold-light:#e4c874;--ink:#172b22;--paper:#f4f8f4;--glass:rgba(255,255,255,.82);--line:rgba(212,175,89,.45);--banner-height:122px;--shadow:0 16px 42px rgba(8,38,27,.13)}
-*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:calc(var(--banner-height) + 100px)}body{color:var(--ink);background:linear-gradient(180deg,#eff7f0,#fbfcf9);position:relative}body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:url('uganda-coat-of-arms.png') center 53%/min(68vw,720px) auto no-repeat;opacity:.065}body > *{position:relative;z-index:1}img{max-width:100%}a{text-decoration:none;transition:transform .2s ease,box-shadow .2s ease,color .2s ease}a:hover{transform:translateY(-2px)}
-.uydnet-account-banner{position:sticky;top:0;z-index:130;background:linear-gradient(115deg,#082b1e,#10573e 65%,#0b3828);color:#fff;border-bottom:1px solid var(--gold);box-shadow:0 10px 24px rgba(6,37,25,.28)}
-.uydnet-banner-inner{max-width:1250px;margin:0 auto;padding:13px 22px;display:grid;grid-template-columns:minmax(0,1.2fr) 1px minmax(0,0.8fr);align-items:center;gap:22px}
-.uydnet-banner-inner .banner-label{display:block;color:#fffdf6b8;font-size:.7rem;letter-spacing:.13em;font-weight:800;margin-bottom:4px;text-transform:uppercase}
-.uydnet-account-number{color:var(--gold-light);font-weight:900;font-size:clamp(1.25rem,2.5vw,2.1rem);letter-spacing:.07em;text-shadow:0 0 18px rgba(212,175,89,.45)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:100px}
+body{color:var(--ink);background:linear-gradient(180deg,#eff7f0,#fbfcf9);position:relative}
+body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:url('uganda-coat-of-arms.png') center 53%/min(68vw,720px) auto no-repeat;opacity:.065}
+body>*{position:relative;z-index:1}
+img{max-width:100%}
+a{transition:color .2s ease,background .2s ease,transform .2s ease}
+
+/* The banner is inserted just before the header by script.js; flex ordering puts
+   the organisation header first and the banner directly beneath it in document flow. */
+body{display:flex;flex-direction:column}
+body>header.site-header{order:1;position:sticky!important;top:0!important;z-index:120!important;background:rgba(255,255,255,.94)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(13,89,61,.14)!important;box-shadow:0 8px 18px rgba(16,49,38,.06)}
+body>.uydnet-account-banner{order:2}
+body>main{order:3;min-width:0}
+body>footer{order:4}
+.uydnet-account-banner{position:relative;top:auto;z-index:2;width:100%;background:linear-gradient(115deg,rgba(8,43,30,.97),rgba(16,87,62,.94) 65%,rgba(11,56,40,.97));color:#fff;border-bottom:1px solid var(--gold);box-shadow:0 12px 28px rgba(6,37,25,.22);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.uydnet-banner-inner{width:min(1250px,100%);margin:0 auto;padding:18px 24px;display:grid;grid-template-columns:minmax(0,1.2fr) 1px minmax(0,.8fr);align-items:center;gap:26px}
+.uydnet-banner-inner>div:first-child{order:1;justify-self:start}
+.uydnet-banner-inner>.uydnet-banner-divider{order:2;justify-self:center}
+.uydnet-banner-inner>div:last-child{order:3;justify-self:end}
+.uydnet-banner-inner .banner-label{display:block;color:rgba(255,255,255,.78);font-size:.72rem;letter-spacing:.13em;font-weight:800;margin-bottom:7px;text-transform:uppercase}
+.uydnet-account-number{color:var(--gold-light);font-weight:900;font-size:clamp(1.25rem,2.4vw,2rem);letter-spacing:.045em;text-shadow:0 0 18px rgba(212,175,89,.4);overflow-wrap:anywhere}
 .uydnet-banner-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.uydnet-banner-divider{height:64px;width:1px;background:rgba(212,175,89,.65)}
-.uydnet-whatsapp-mark{width:34px;height:34px;display:grid;place-items:center;background:#25d366;border-radius:50%;font-weight:900;color:#fff}
-.uydnet-copy,.uydnet-contact-link,.uydnet-whatsapp-link,.uydnet-group-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid rgba(212,175,89,.9);border-radius:999px;padding:9px 15px;font-weight:800;color:#fff;background:rgba(212,175,89,.12);cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
-.uydnet-copy,.uydnet-contact-link,.uydnet-whatsapp-link,.uydnet-group-link{min-height:38px}
-.uydnet-copy:hover,.uydnet-contact-link:hover,.uydnet-whatsapp-link:hover,.uydnet-group-link:hover{transform:translateY(-2px);box-shadow:0 9px 20px rgba(0,0,0,.16);background:rgba(212,175,89,.2)}
-.uydnet-account-banner .uydnet-copy-status{min-height:1.2em;font-size:.75rem;color:#dfe8e0;opacity:.9}.uydnet-account-banner .uydnet-contact-link,.uydnet-account-banner .uydnet-whatsapp-link{background:linear-gradient(135deg,#25d366,#15976a);border-color:rgba(255,255,255,.7)}
-.uydnet-account-banner .uydnet-contact-link{margin-left:4px}
-.uydnet-banner-inner > div:first-child{order:1;justify-self:start}.uydnet-banner-inner > .uydnet-banner-divider{order:2;justify-self:center}.uydnet-banner-inner > div:last-child{order:3;justify-self:end}
-header.site-header,body>header{top:var(--banner-height)!important;z-index:120!important;background:#ffffffed!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(13,89,61,.14)!important;box-shadow:0 8px 18px rgba(16,49,38,.06)}
-.dashboard-menu-toggle{top:calc(var(--banner-height) + 18px)!important;right:18px!important;z-index:160!important;background:linear-gradient(135deg,var(--navy),#0f4e9b);color:white;box-shadow:0 14px 28px rgba(11,58,122,.22)}
-.dashboard-backdrop{z-index:140}.dashboard-panel{z-index:170}.hero{background:linear-gradient(125deg,#082f22eF,#10654fe8),url('uganda-flag.jpg') center/cover no-repeat!important}.hero h1 em{color:var(--gold-light)!important}.hero-card,.info-box,.card,article,.contact-card,.uydnet-account-details,.uydnet-community-card{border:1px solid var(--line)!important;border-radius:20px!important;box-shadow:var(--shadow)!important}
-.uydnet-account-details,.uydnet-community-card{max-width:850px;margin:26px auto;padding:24px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}.uydnet-account-details h2,.uydnet-community-card h2,.uydnet-community-card h3{color:var(--royal);margin-top:0}.uydnet-account-details .account-number-box{margin-top:18px;padding:18px 20px;background:linear-gradient(135deg,#0d5f44,#0b3a2b);border-radius:16px;border:1px solid rgba(212,175,89,.7)}
-#uydnetVirtualAssistant{z-index:20000}.uydnet-va-launcher{background:linear-gradient(135deg,#0b5038,#15976a)!important;border:2px solid var(--gold)!important}.uydnet-va-head{background:linear-gradient(135deg,#0a2d1f,#0f6549)!important}
-@media(max-width:850px){:root{--banner-height:184px}.uydnet-banner-inner{grid-template-columns:1fr;gap:10px;padding:12px 16px}.uydnet-banner-divider{display:none}.uydnet-account-banner{min-height:var(--banner-height)}.uydnet-banner-inner > div:first-child,.uydnet-banner-inner > div:last-child{justify-self:stretch}header.site-header,body>header{top:var(--banner-height)!important}.dashboard-menu-toggle{top:calc(var(--banner-height) + 12px)!important}.uydnet-account-details,.uydnet-community-card{margin:20px 16px;padding:18px 16px}.uydnet-account-number{font-size:1.4rem}
+.uydnet-banner-divider{height:66px;width:1px;background:rgba(212,175,89,.7)}
+.uydnet-whatsapp-mark{width:36px;height:36px;flex:0 0 36px;display:grid;place-items:center;background:#25d366;border-radius:50%;font-weight:900;color:#fff}
+.uydnet-copy,.uydnet-contact-link,.uydnet-whatsapp-link,.uydnet-group-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid rgba(255,255,255,.48);border-radius:999px;padding:10px 16px;min-height:42px;font-weight:800;color:#fff;background:rgba(220,242,255,.15);cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+.uydnet-account-banner .uydnet-copy{color:#fff;background:rgba(255,255,255,.1);border-color:rgba(212,175,89,.8)}
+.uydnet-account-banner .uydnet-whatsapp-link,.uydnet-account-banner .uydnet-contact-link{background:linear-gradient(135deg,#22c96a,#168b59);border-color:rgba(255,255,255,.55)}
+.uydnet-copy:hover,.uydnet-contact-link:hover,.uydnet-whatsapp-link:hover,.uydnet-group-link:hover{transform:translateY(-2px);box-shadow:0 9px 20px rgba(0,0,0,.2)}
+.uydnet-banner-inner .uydnet-copy-status{min-height:1.2em;margin:4px 0 0;font-size:.75rem;color:#e4f2e9}
+
+/* The menu stays anchored to the organisation header, never the information banner. */
+.dashboard-menu-toggle{position:fixed!important;top:18px!important;right:18px!important;z-index:1500!important}
+.dashboard-backdrop{z-index:1450!important}
+.dashboard-panel{z-index:1600!important}
+.uydnet-dashboard-community{margin:12px 0 16px;padding:14px;border:1px solid var(--gold);border-radius:16px;background:linear-gradient(135deg,#10563e,#0b3929);color:#fff}
+.uydnet-dashboard-community p{margin:0 0 8px;color:rgba(255,255,255,.82);font-weight:700}
+.uydnet-dashboard-community .uydnet-whatsapp-link,.uydnet-dashboard-community .uydnet-group-link{width:100%;margin-top:8px;font-size:.75rem}
+.uydnet-group-link{background:linear-gradient(135deg,#986d17,#c49b3f);color:#fff}
+
+.hero{background:linear-gradient(125deg,rgba(8,47,34,.94),rgba(16,101,79,.9)),url('uganda-flag.jpg') center/cover no-repeat!important}
+.hero h1 em{color:var(--gold-light)!important}
+.hero-card,.info-box,.card,article,.contact-card,.uydnet-account-details,.uydnet-community-card{border:1px solid var(--line)!important;border-radius:20px!important;box-shadow:var(--shadow)!important}
+.hero-card,.glass-panel{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.hero-card{background:rgba(255,255,255,.1)!important}
+.section-title span,.section-title>span{color:#9a761f!important}
+.section-title h2,.card h3,.info-box h3{color:var(--royal)!important}
+.section.tint{background:#e8f2e9!important}
+.btn-primary{background:linear-gradient(135deg,#d4af59,#ead184)!important;color:#173322!important}
+.btn-secondary,.btn-plain{border:1px solid #d4af59!important}
+.photo-frame{border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}
+.site-photo{height:auto;object-fit:contain!important}
+.section.dark,.dark{background:linear-gradient(135deg,#092c21,#0c4734)!important}
+.contact-card{background:rgba(255,255,255,.08)!important}
+.footer,footer{background:#082c20!important;border-top:1px solid var(--gold)}
+.uydnet-account-details,.uydnet-community-card{max-width:850px;margin:26px auto;padding:24px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.uydnet-account-details h2,.uydnet-community-card h2{color:var(--royal);margin-top:0}
+.uydnet-account-detail-number,.uydnet-account-details-number{font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;letter-spacing:.04em;color:#0b5639;overflow-wrap:anywhere}
+.account-number-box{overflow-wrap:anywhere}
+.uydnet-copy-status{min-height:1.4em;font-weight:700;color:#0b6848}
+.uydnet-community-card{background:linear-gradient(135deg,#0e6848,#0a392a);color:#fff}
+.uydnet-community-card h2,.uydnet-community-card p{color:#fff}
+.uydnet-community-actions{display:flex;flex-wrap:wrap;gap:12px}
+.uydnet-community-actions>*{flex:1 1 220px}
+.uydnet-community-invite{margin-top:20px;padding:16px;border:1px solid var(--gold);border-radius:16px;background:linear-gradient(130deg,#0d6448,#0c3829);color:#fff}
+.uydnet-community-invite h3,.uydnet-community-invite p{color:#fff!important;margin-top:0}
+.uydnet-community-invite .uydnet-whatsapp-link{margin-top:6px}
+#uydnetVirtualAssistant{z-index:20000}
+.uydnet-va-launcher{background:linear-gradient(135deg,#0b5038,#15976a)!important;border:2px solid var(--gold)!important}
+.uydnet-va-head{background:linear-gradient(135deg,#0a3828,#0f694a)!important}
+
+@media(max-width:850px){
+  :root{--banner-height:auto}
+  .uydnet-banner-inner{grid-template-columns:minmax(0,1fr);gap:12px;padding:15px 18px}
+  .uydnet-banner-divider{display:none}
+  .uydnet-banner-inner>div:first-child,.uydnet-banner-inner>div:last-child{justify-self:stretch}
+  .uydnet-account-number{font-size:1.35rem}
+  .uydnet-account-details,.uydnet-community-card{margin:20px 16px;padding:18px 16px}
+  .uydnet-community-actions{display:grid}
+  .uydnet-community-actions>*{width:100%}
 }
-@media(max-width:520px){:root{--banner-height:205px}.uydnet-banner-inner{padding:10px 12px;gap:7px}.uydnet-account-number{font-size:1.08rem;letter-spacing:.03em}.uydnet-banner-inner .banner-label{font-size:.62rem}.uydnet-copy,.uydnet-contact-link,.uydnet-whatsapp-link,.uydnet-group-link{font-size:.73rem;padding:7px 10px}.dashboard-menu-toggle{top:calc(var(--banner-height) + 8px)!important}.uydnet-account-details,.uydnet-community-card{margin:16px 12px;padding:16px 14px}.uydnet-banner-row{gap:8px}.uydnet-banner-inner > div:last-child{justify-self:start}
+@media(max-width:520px){
+  .uydnet-banner-inner{padding:13px 14px;gap:10px}
+  .uydnet-account-number{font-size:1.05rem;letter-spacing:.025em}
+  .uydnet-banner-inner .banner-label{font-size:.62rem}
+  .uydnet-copy,.uydnet-contact-link,.uydnet-whatsapp-link,.uydnet-group-link{font-size:.72rem;padding:8px 11px;min-height:38px}
+  .uydnet-banner-row{gap:8px}
+  .dashboard-menu-toggle{top:12px!important;right:12px!important;width:48px;height:48px}
+  .uydnet-account-details,.uydnet-community-card{margin:16px 12px;padding:16px 14px}
+  .uydnet-account-details-number,.uydnet-account-detail-number{font-size:1.35rem}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important}}
