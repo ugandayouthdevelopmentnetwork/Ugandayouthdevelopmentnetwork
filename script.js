@@ -1,236 +1,916 @@
-// Existing site navigation and footer year.
-const menuButton = document.querySelector('.menubtn');
-const nav = document.querySelector('nav');
-if (menuButton && nav) menuButton.addEventListener('click', () => nav.classList.toggle('open'));
-document.querySelectorAll('nav a').forEach((link) => link.addEventListener('click', () => nav?.classList.remove('open')));
-const year = document.getElementById('year');
-if (year) year.textContent = new Date().getFullYear();
+:root {
+  --emerald-900: #0a2d1f;
+  --emerald-800: #0d3a2d;
+  --emerald-700: #0f5b46;
+  --emerald-600: #137a5f;
+  --emerald-500: #1f9d73;
+  --gold-500: #d4af59;
+  --gold-400: #e1c06b;
+  --black-950: #0b120f;
+  --text-900: #11241b;
+  --text-700: #274a3b;
+  --line: rgba(13, 59, 46, 0.12);
+  --surface: rgba(255, 255, 255, 0.7);
+  --surface-strong: rgba(255, 255, 255, 0.82);
+  --white: #ffffff;
+  --shadow-soft: 0 18px 45px rgba(7, 23, 18, 0.12);
+  --shadow-strong: 0 32px 60px rgba(7, 23, 18, 0.18);
+  --banner-height: 122px;
+}
 
-(() => {
-  'use strict';
-  // Pages is static: use only facts present in the current site's published content.
-  // No API key, fabricated model call, or claim of a disconnected AI service.
-  const start = () => {
-    if (document.getElementById('uydnetVirtualAssistant')) return;
-    // Replace the previous placeholder widget, preventing duplicate assistant UIs.
-    document.getElementById('uydnetAI')?.remove();
-    document.getElementById('uydnetAiButton')?.remove();
-    document.querySelectorAll('link[rel="stylesheet"]').forEach((link) => {
-      if (/styles\.css(?:\?|$)/.test(link.href)) {
-        const assistantCss = document.createElement('link');
-        assistantCss.rel = 'stylesheet';
-        assistantCss.href = new URL('assistant.css', link.href).href;
-        document.head.append(assistantCss);
-      }
-    });
+* { box-sizing: border-box; }
 
-    const icon = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.2 14 8l4.8 2-4.8 2-2 4.8L10 12l-4.8-2L10 8l2-4.8Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m18.7 15 .9 2.2 2.2.9-2.2.9-.9 2.2-.9-2.2-2.2-.9 2.2-.9.9-2.2Z" fill="currentColor"/></svg>';
-    const panel = document.createElement('section');
-    panel.id = 'uydnetVirtualAssistant';
-    panel.className = 'uydnet-va-panel';
-    panel.setAttribute('role', 'dialog');
-    panel.setAttribute('aria-label', 'UYDNet Virtual Assistant');
-    panel.setAttribute('aria-modal', 'false');
-    panel.innerHTML = `
-      <header class="uydnet-va-head" data-va-drag>
-        <div class="uydnet-va-avatar">${icon}</div>
-        <div class="uydnet-va-title"><strong>UYDNet Virtual Assistant</strong><span>Website information · English</span></div>
-        <div class="uydnet-va-head-actions">
-          <button class="uydnet-va-icon" type="button" data-action="minimize" aria-label="Minimise assistant" title="Minimise"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-          <button class="uydnet-va-icon" type="button" data-action="close" aria-label="Close assistant" title="Close">×</button>
-        </div>
-      </header>
-      <div class="uydnet-va-toolbar"><small>Answers are grounded in information on this website.</small><button type="button" data-action="clear">Clear chat</button></div>
-      <div class="uydnet-va-messages" role="log" aria-live="polite" aria-relevant="additions text"></div>
-      <div class="uydnet-va-live" aria-live="polite"></div>
-      <div class="uydnet-va-composer">
-        <div class="uydnet-va-controls">
-          <textarea class="uydnet-va-input" rows="1" aria-label="Your message" placeholder="Ask about UYDNet…"></textarea>
-          <button class="uydnet-va-icon uydnet-va-mic" type="button" data-action="mic" aria-label="Start voice input" title="Speak a question"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3m-4 0h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-          <button class="uydnet-va-send" type="button" data-action="send" aria-label="Send message" title="Send"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m4 4 17 8-17 8 3-8-3-8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7 12h14" stroke="currentColor" stroke-width="1.8"/></svg></button>
-        </div>
-        <div class="uydnet-va-voicebar"><label><input type="checkbox" data-action="voice-mode"> Read replies aloud</label><span class="spacer"></span><button type="button" data-action="stop-voice" aria-label="Stop spoken response">Stop voice</button></div>
-      </div>`;
-    const launcher = document.createElement('button');
-    launcher.className = 'uydnet-va-launcher';
-    launcher.type = 'button';
-    launcher.setAttribute('aria-label', 'Open UYDNet Virtual Assistant');
-    launcher.setAttribute('aria-expanded', 'false');
-    launcher.innerHTML = icon;
-    document.body.append(panel, launcher);
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 160px;
+}
 
-    const messages = panel.querySelector('.uydnet-va-messages');
-    const input = panel.querySelector('.uydnet-va-input');
-    const live = panel.querySelector('.uydnet-va-live');
-    const mic = panel.querySelector('[data-action="mic"]');
-    const voiceMode = panel.querySelector('[data-action="voice-mode"]');
-    const recognitionApi = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let recognition = null;
-    let listening = false;
-    let drag = null;
-    let lastBotText = '';
-    let previousQuestion = '';
-    let isOpen = false;
-    const suggestions = ['What is UYDNet?', 'How can I become a member?', 'What programmes does UYDNet offer?', 'How can I support UYDNet?', 'How can I become a partner?', 'How can I volunteer?'];
-    const routeHints = [
-      { terms: ['membership', 'join', 'register', 'registration'], id: 'membership', label: 'Membership' },
-      { terms: ['programme', 'program', 'activity', 'activities'], id: 'programs', label: 'Programs & Activities' },
-      { terms: ['partner', 'partnership'], id: 'partner', label: 'Become a Partner' },
-      { terms: ['donat', 'support', 'contribution'], id: 'support', label: 'Support UYDNet' },
-      { terms: ['leadership', 'leader', 'governance', 'constitution', 'rules'], id: 'leadership', label: 'Leadership & governance' },
-      { terms: ['contact', 'phone', 'email', 'reach'], id: 'contact', label: 'Contact UYDNet' },
-      { terms: ['objective', 'mission', 'vision', 'identity', 'history'], id: 'identity', label: 'About UYDNet' },
-      { terms: ['health', 'education', 'youth', 'community', 'skill', 'volunteer', 'opportunit'], id: 'objectives', label: 'Objectives & focus areas' },
-      { terms: ['news', 'announcement'], id: 'news', label: 'News & Activities' }
-    ];
-    function addLinks(container, question) {
-      const lower = question.toLowerCase();
-      const found = routeHints.filter((hint) => hint.terms.some((term) => lower.includes(term)) && document.getElementById(hint.id));
-      if (!found.length) return;
-      const links = document.createElement('div'); links.className = 'uydnet-va-links';
-      found.slice(0, 2).forEach((hint) => { const a = document.createElement('a'); a.href = `#${hint.id}`; a.textContent = `Go to ${hint.label} →`; links.append(a); });
-      container.append(links);
-    }
-    function addMessage(text, who, question = '') {
-      const row = document.createElement('div'); row.className = `uydnet-va-row ${who}`;
-      const bubble = document.createElement('div'); bubble.className = 'uydnet-va-bubble';
-      const body = document.createElement('div'); body.textContent = text; bubble.append(body);
-      if (who === 'assistant') {
-        const meta = document.createElement('div'); meta.className = 'uydnet-va-meta';
-        const time = document.createElement('time'); time.dateTime = new Date().toISOString(); time.textContent = new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' }).format(new Date());
-        const copy = document.createElement('button'); copy.type = 'button'; copy.textContent = 'Copy'; copy.setAttribute('aria-label', 'Copy assistant response');
-        copy.addEventListener('click', async () => { try { await navigator.clipboard.writeText(text); copy.textContent = 'Copied'; setTimeout(() => { copy.textContent = 'Copy'; }, 1400); } catch { live.textContent = 'Copy is unavailable in this browser.'; } });
-        meta.append(time, copy); bubble.append(meta); addLinks(bubble, question);
-      }
-      row.append(bubble); messages.append(row); messages.scrollTop = messages.scrollHeight; return row;
-    }
-    function addSuggestions() {
-      const wrap = document.createElement('div'); wrap.className = 'uydnet-va-suggestions';
-      suggestions.forEach((question) => { const button = document.createElement('button'); button.type = 'button'; button.textContent = question; button.addEventListener('click', () => { input.value = question; send(); }); wrap.append(button); });
-      messages.append(wrap);
-    }
-    function welcome() {
-      messages.replaceChildren();
-      addMessage('Hello! I’m the UYDNet Virtual Assistant. I can help you explore the information published on this website, including our mission, focus areas, membership, partnerships and ways to get involved. What would you like to know?', 'assistant');
-      addSuggestions();
-    }
-    function makeKnowledgeIndex() {
-      return [...document.querySelectorAll('main section, main article, body > section')]
-        .filter((section) => !section.closest('#uydnetVirtualAssistant'))
-        .map((section) => ({ id: section.id, title: section.querySelector('h1,h2,h3')?.textContent?.trim() || '', text: (section.innerText || section.textContent || '').replace(/\s+/g, ' ').trim() }))
-        .filter((entry) => entry.text.length > 25);
-    }
-    function answerQuestion(question) {
-      const cleaned = question.trim();
-      const previous = previousQuestion ? ` Earlier topic in this conversation: “${previousQuestion}”.` : '';
-      previousQuestion = cleaned;
-      const lower = cleaned.toLowerCase();
-      if (/\b(hi|hello|hey|good morning|good afternoon)\b/.test(lower)) return 'Hello! I’m here to help you find information about UYDNet. You can ask about our work, membership, programmes, partnerships or support.';
-      const index = makeKnowledgeIndex();
-      const words = lower.match(/[a-z]{3,}/g) || [];
-      const stop = new Set(['what','where','when','which','does','your','about','with','from','that','this','there','have','tell','please','could','would','should','how','who','why','can','the','and','for','are','you','our']);
-      const terms = [...new Set(words.filter((word) => !stop.has(word)))];
-      const scored = index.map((entry) => {
-        const text = `${entry.title} ${entry.text}`.toLowerCase();
-        const score = terms.reduce((sum, term) => sum + (text.includes(term) ? (entry.title.toLowerCase().includes(term) ? 4 : 1) : 0), 0);
-        return { ...entry, score };
-      }).filter((entry) => entry.score > 0).sort((a, b) => b.score - a.score).slice(0, 2);
-      if (!terms.length || !scored.length) {
-        const contact = document.getElementById('contact');
-        const email = contact?.querySelector('a[href^="mailto:"]')?.getAttribute('href')?.replace('mailto:', '');
-        return `I couldn’t find a reliable answer to that in the information published on this website. I don’t want to guess. You can browse the relevant sections below${email ? ` or contact UYDNet at ${email}` : ''}.${previous}`;
-      }
-      const excerpts = scored.map((entry) => {
-        let excerpt = entry.text;
-        if (excerpt.length > 620) {
-          const matchAt = terms.map((term) => excerpt.toLowerCase().indexOf(term)).filter((position) => position >= 0).sort((a,b) => a-b)[0] || 0;
-          const begin = Math.max(0, matchAt - 100); excerpt = `${begin ? '…' : ''}${excerpt.slice(begin, begin + 620)}${begin + 620 < entry.text.length ? '…' : ''}`;
-        }
-        return `${entry.title ? `${entry.title}: ` : ''}${excerpt}`;
-      });
-      const direct = /\b(membership|member|join|register)\b/.test(lower) ? 'For the published membership steps and application form, open the Membership section. ' : /\b(program|programme|activity|activities)\b/.test(lower) ? 'Here is what the website currently says about UYDNet programmes and activities. ' : '';
-      return `${direct}${excerpts.join('\n\n')}${previous}`;
-    }
-    function showTyping() {
-      const row = document.createElement('div'); row.className = 'uydnet-va-row assistant'; row.dataset.typing = 'true';
-      const dots = document.createElement('div'); dots.className = 'uydnet-va-typing'; dots.setAttribute('aria-label', 'Assistant is preparing a response'); dots.innerHTML = '<i></i><i></i><i></i>'; row.append(dots); messages.append(row); messages.scrollTop = messages.scrollHeight; return row;
-    }
-    function speak(text) {
-      if (!('speechSynthesis' in window) || !voiceMode.checked) return;
-      speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text); utterance.lang = document.documentElement.lang || 'en'; utterance.rate = 1; utterance.pitch = 1;
-      speechSynthesis.speak(utterance);
-    }
-    function stopListening() {
-      if (recognition && listening) recognition.stop();
-      listening = false; mic.classList.remove('is-listening'); mic.setAttribute('aria-label', 'Start voice input');
-      if (!live.textContent.startsWith('Microphone access')) live.textContent = '';
-    }
-    function stopAll() { stopListening(); if ('speechSynthesis' in window) speechSynthesis.cancel(); }
-    function send() {
-      const question = input.value.trim(); if (!question) return;
-      stopListening(); if ('speechSynthesis' in window) speechSynthesis.cancel();
-      messages.querySelector('.uydnet-va-suggestions')?.remove();
-      addMessage(question, 'user'); input.value = ''; input.style.height = 'auto';
-      const typing = showTyping(); live.textContent = 'Preparing an answer from UYDNet website content.';
-      window.setTimeout(() => {
-        typing.remove(); const response = answerQuestion(question); lastBotText = response;
-        addMessage(response, 'assistant', question); live.textContent = 'Response based on information currently published on this website.'; speak(response);
-      }, 420);
-    }
-    function open() {
-      isOpen = true; panel.hidden = false; requestAnimationFrame(() => panel.classList.add('is-open'));
-      launcher.setAttribute('aria-expanded', 'true'); launcher.style.display = 'none';
-      if (!messages.children.length) welcome(); input.focus();
-    }
-    function close() {
-      stopAll(); isOpen = false; panel.classList.remove('is-open'); launcher.style.display = 'grid'; launcher.setAttribute('aria-expanded', 'false');
-      window.setTimeout(() => { if (!isOpen) panel.hidden = true; }, 220);
-    }
-    launcher.addEventListener('click', open);
-    panel.addEventListener('click', (event) => {
-      const action = event.target.closest('[data-action]')?.dataset.action;
-      if (!action) return;
-      if (action === 'close') close();
-      if (action === 'minimize') { panel.classList.toggle('is-minimized'); panel.querySelector('[data-action="minimize"]').setAttribute('aria-label', panel.classList.contains('is-minimized') ? 'Restore assistant' : 'Minimise assistant'); }
-      if (action === 'clear') { stopAll(); previousQuestion = ''; welcome(); live.textContent = 'Conversation cleared.'; }
-      if (action === 'send') send();
-      if (action === 'stop-voice' && 'speechSynthesis' in window) speechSynthesis.cancel();
-      if (action === 'mic') toggleMic();
-    });
-    input.addEventListener('keydown', (event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); send(); } });
-    input.addEventListener('input', () => { input.style.height = 'auto'; input.style.height = `${Math.min(input.scrollHeight, 100)}px`; });
-    function toggleMic() {
-      if (listening) { stopListening(); live.textContent = 'Voice listening stopped.'; return; }
-      if (!recognitionApi) { live.textContent = 'Voice input is not supported in this browser. You can type your question instead.'; return; }
-      try {
-        recognition = new recognitionApi(); recognition.lang = document.documentElement.lang || 'en-US'; recognition.interimResults = true; recognition.continuous = false;
-        recognition.onstart = () => { listening = true; mic.classList.add('is-listening'); mic.setAttribute('aria-label', 'Stop voice input'); live.textContent = 'Listening. Speak your question; your browser may ask for microphone permission.'; };
-        recognition.onresult = (event) => { let transcript = ''; for (let i = event.resultIndex; i < event.results.length; i++) transcript += event.results[i][0].transcript; input.value = transcript; input.dispatchEvent(new Event('input')); };
-        recognition.onerror = (event) => { listening = false; mic.classList.remove('is-listening'); mic.setAttribute('aria-label', 'Start voice input'); live.textContent = event.error === 'not-allowed' ? 'Microphone permission was denied. Allow microphone access in browser settings to use voice input.' : `Voice input error: ${event.error}. You can type your question instead.`; };
-        recognition.onend = () => { listening = false; mic.classList.remove('is-listening'); mic.setAttribute('aria-label', 'Start voice input'); if (!live.textContent.includes('permission') && input.value.trim()) live.textContent = 'Voice text is ready. Review it, then tap send.'; };
-        live.textContent = 'Requesting microphone permission…'; recognition.start();
-      } catch { live.textContent = 'Could not start voice input. Check microphone permissions or type your question.'; }
-    }
-    // Pointer-driven drag works with mouse, pen, and touch. Dragging the icon is optional.
-    panel.querySelector('[data-va-drag]').addEventListener('pointerdown', (event) => {
-      if (event.target.closest('button')) return;
-      const rect = panel.getBoundingClientRect(); drag = { x: event.clientX, y: event.clientY, left: rect.left, top: rect.top };
-      event.currentTarget.setPointerCapture?.(event.pointerId);
-    });
-    panel.querySelector('[data-va-drag]').addEventListener('pointermove', (event) => {
-      if (!drag) return;
-      const left = Math.max(8, Math.min(window.innerWidth - panel.offsetWidth - 8, drag.left + event.clientX - drag.x));
-      const top = Math.max(8, Math.min(window.innerHeight - 80, drag.top + event.clientY - drag.y));
-      panel.style.left = `${left}px`; panel.style.top = `${top}px`; panel.style.right = 'auto'; panel.style.bottom = 'auto';
-    });
-    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach((name) => panel.querySelector('[data-va-drag]').addEventListener(name, () => { drag = null; }));
-    launcher.addEventListener('pointerdown', (event) => { drag = { x: event.clientX, y: event.clientY, left: launcher.getBoundingClientRect().left, top: launcher.getBoundingClientRect().top, moved: false }; launcher.setPointerCapture?.(event.pointerId); });
-    launcher.addEventListener('pointermove', (event) => { if (!drag) return; if (Math.abs(event.clientX - drag.x) + Math.abs(event.clientY - drag.y) > 5) drag.moved = true; if (drag.moved) { launcher.style.left = `${Math.max(4, Math.min(innerWidth - 66, drag.left + event.clientX - drag.x))}px`; launcher.style.top = `${Math.max(4, Math.min(innerHeight - 66, drag.top + event.clientY - drag.y))}px`; launcher.style.right = 'auto'; launcher.style.bottom = 'auto'; } });
-    launcher.addEventListener('pointerup', () => { if (drag?.moved) { const wasOpen = false; launcher.dataset.dragged = 'true'; setTimeout(() => delete launcher.dataset.dragged, 0); } drag = null; });
-    launcher.addEventListener('click', (event) => { if (launcher.dataset.dragged) { event.stopImmediatePropagation(); delete launcher.dataset.dragged; } }, true);
-    window.addEventListener('resize', () => { if (!isOpen) return; const rect = panel.getBoundingClientRect(); if (rect.left > innerWidth - 30 || rect.top > innerHeight - 30) { panel.style.left = ''; panel.style.top = ''; panel.style.right = '8px'; panel.style.bottom = '84px'; } });
-    document.addEventListener('visibilitychange', () => { if (document.hidden) stopAll(); });
-  };
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true }); else start();
-})();
+body {
+  margin: 0;
+  font: 16px/1.6 Arial, Helvetica, sans-serif;
+  color: var(--text-900);
+  background: linear-gradient(180deg, #edf8f1 0%, #f6faf7 100%);
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: url('uganda-coat-of-arms.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; }
+
+button, input, textarea {
+  font: inherit;
+}
+
+.container {
+  width: min(1160px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.top-account-banner {
+  position: sticky;
+  top: 0;
+  z-index: 120;
+  background: linear-gradient(135deg, rgba(11, 45, 31, 0.98), rgba(13, 62, 48, 0.96));
+  border-bottom: 1px solid rgba(212, 175, 89, 0.8);
+  box-shadow: 0 12px 28px rgba(8, 27, 21, 0.22);
+}
+
+.banner-shell {
+  width: min(1280px, calc(100% - 24px));
+  margin: 0 auto;
+  padding: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.banner-block {
+  flex: 1;
+  min-width: 0;
+}
+
+.banner-label {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.banner-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.banner-number {
+  color: var(--gold-400);
+  font-size: clamp(1.2rem, 2vw, 2rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 18px rgba(212, 175, 89, 0.35);
+}
+
+.copy-account-button {
+  background: rgba(212, 175, 89, 0.12);
+  color: var(--white);
+  border: 1px solid rgba(212, 175, 89, 0.8);
+  border-radius: 999px;
+  padding: 0.7rem 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.copy-account-button:hover,
+.copy-account-button:focus-visible {
+  background: rgba(212, 175, 89, 0.2);
+  transform: translateY(-1px);
+}
+
+.banner-divider {
+  width: 1px;
+  height: 76px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(212, 175, 89, 0.9), rgba(255, 255, 255, 0.02));
+}
+
+.banner-whatsapp-row {
+  justify-content: flex-start;
+}
+
+.whatsapp-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #28cd64, #1ea14a);
+  color: var(--white);
+  font-weight: 800;
+  box-shadow: 0 10px 22px rgba(31, 158, 89, 0.35);
+}
+
+.whatsapp-banner-button,
+.dashboard-whatsapp-button,
+.dashboard-group-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border-radius: 999px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.whatsapp-banner-button {
+  background: linear-gradient(135deg, #25d366, #1fa552);
+  color: var(--white);
+  box-shadow: 0 10px 26px rgba(37, 211, 102, 0.36);
+  padding: 0.8rem 1.2rem;
+  margin-top: 10px;
+}
+
+.site-header {
+  position: sticky;
+  top: var(--banner-height);
+  z-index: 110;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 12px 26px rgba(14, 38, 30, 0.08);
+}
+
+.navwrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 86px;
+  gap: 20px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand img {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 12px 22px rgba(7, 20, 16, 0.16);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-text strong {
+  font-size: clamp(1.2rem, 2vw, 1.65rem);
+  color: var(--emerald-900);
+}
+
+.brand-text small {
+  color: #4d6a5d;
+  font-size: 0.7rem;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.header-nav a {
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--emerald-800);
+  opacity: 0.8;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.header-nav a:hover,
+.header-nav a:focus-visible {
+  opacity: 1;
+  color: var(--emerald-600);
+}
+
+.dashboard-menu-toggle {
+  position: fixed;
+  top: calc(var(--banner-height) + 16px);
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  z-index: 130;
+  border: 0;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--emerald-800), var(--emerald-600));
+  box-shadow: 0 18px 34px rgba(8, 42, 30, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.dashboard-menu-toggle span {
+  width: 22px;
+  height: 2.5px;
+  border-radius: 999px;
+  background: var(--white);
+  display: block;
+}
+
+.dashboard-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 15, 13, 0.42);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 110;
+}
+
+.dashboard-backdrop.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dashboard-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(380px, 88vw);
+  height: 100vh;
+  background: rgba(8, 25, 20, 0.96);
+  border-left: 1px solid rgba(212, 175, 89, 0.7);
+  box-shadow: -28px 0 48px rgba(3, 12, 9, 0.28);
+  transform: translateX(106%);
+  transition: transform 0.28s ease;
+  z-index: 140;
+  padding: 18px 18px 24px;
+  overflow-y: auto;
+}
+
+.dashboard-panel.is-open {
+  transform: translateX(0);
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(212, 175, 89, 0.25);
+}
+
+.dashboard-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--white);
+  font-weight: 800;
+}
+
+.dashboard-brand img {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+}
+
+.dashboard-close {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--white);
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.dashboard-whatsapp-card {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(20, 113, 81, 0.85), rgba(12, 71, 56, 0.82));
+  border: 1px solid rgba(212, 175, 89, 0.6);
+  box-shadow: 0 18px 32px rgba(15, 90, 70, 0.25);
+}
+
+.dashboard-whatsapp-card p {
+  margin: 0 0 12px;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.dashboard-whatsapp-button,
+.dashboard-group-button {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  margin-top: 10px;
+  font-size: 0.78rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dashboard-whatsapp-button {
+  background: linear-gradient(135deg, #25d366, #1ea84d);
+  color: var(--white);
+}
+
+.dashboard-group-button {
+  background: linear-gradient(135deg, rgba(212, 175, 89, 0.18), rgba(9, 50, 36, 0.5));
+  color: var(--white);
+}
+
+.dashboard-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.dashboard-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 0.9rem 0.95rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--white);
+  text-align: left;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.dashboard-item:hover,
+.dashboard-item:focus-visible {
+  background: rgba(212, 175, 89, 0.09);
+  transform: translateX(-2px);
+}
+
+.dashboard-icon {
+  width: 22px;
+  text-align: center;
+  display: inline-block;
+}
+
+main {
+  padding-bottom: 48px;
+}
+
+.hero {
+  background: linear-gradient(135deg, rgba(10, 45, 31, 0.92), rgba(14, 82, 67, 0.8)), url('uganda-flag.jpg') center/cover no-repeat;
+  color: var(--white);
+  padding: 82px 0 72px;
+}
+
+.hero-inner {
+  width: min(1160px, calc(100% - 32px));
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+  gap: 30px;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 16px;
+  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 800;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.hero h1 em {
+  color: var(--gold-400);
+  font-style: normal;
+}
+
+.lead {
+  margin: 18px 0 0;
+  max-width: 650px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.08rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-weight: 800;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
+  color: #102912;
+  box-shadow: 0 14px 28px rgba(212, 175, 89, 0.26);
+}
+
+.btn-secondary,
+.btn-plain {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--white);
+}
+
+.hero-card {
+  padding: 28px 22px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(212, 175, 89, 0.7);
+  box-shadow: 0 18px 38px rgba(6, 23, 20, 0.18);
+}
+
+.hero-card h2 {
+  margin: 0 0 16px;
+  font-size: 1.4rem;
+  color: var(--gold-400);
+}
+
+.hero-card ul {
+  margin: 0;
+  padding-left: 18px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-card li + li {
+  margin-top: 10px;
+}
+
+.section {
+  padding: 70px 0;
+}
+
+.section.tint {
+  background: rgba(224, 239, 231, 0.8);
+}
+
+.section.dark {
+  background: linear-gradient(135deg, rgba(13, 23, 19, 0.98), rgba(8, 46, 35, 0.96));
+  color: var(--white);
+}
+
+.section-title {
+  max-width: 760px;
+  margin: 0 auto 28px;
+  text-align: center;
+}
+
+.section-title span {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: var(--emerald-700);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.section-title h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  color: var(--emerald-900);
+}
+
+.section.dark .section-title h2,
+.section.dark .section-title span {
+  color: var(--white);
+}
+
+.info-box,
+.card,
+.contact-card,
+.account-detail-card,
+.whatsapp-community-card {
+  position: relative;
+  border-radius: 24px;
+}
+
+.glass-panel {
+  background: var(--surface);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(212, 175, 89, 0.5);
+  box-shadow: var(--shadow-soft);
+}
+
+.info-box,
+.card {
+  padding: 26px 22px;
+}
+
+.intro-grid,
+.grid-3,
+.two-col,
+.contact-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.intro-grid,
+.grid-3 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.two-col {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.card small {
+  display: inline-block;
+  color: var(--emerald-700);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.card h3,
+.info-box h3 {
+  margin-top: 0;
+  color: var(--emerald-900);
+}
+
+.card p,
+.info-box p,
+.contact-card p,
+.contact-card a {
+  color: inherit;
+}
+
+.section.dark .contact-card,
+.contact-card-light {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(212, 175, 89, 0.35);
+  box-shadow: 0 12px 24px rgba(8, 25, 19, 0.18);
+}
+
+.list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.list li + li {
+  margin-top: 10px;
+}
+
+.photo-frame {
+  width: min(1160px, calc(100% - 32px));
+  margin: 0 auto 36px;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(212, 175, 89, 0.5);
+}
+
+.site-photo {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.account-detail-card {
+  width: min(760px, 100%);
+  margin: 0 auto;
+  padding: 28px 24px;
+}
+
+.account-detail-label {
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--emerald-700);
+}
+
+.account-detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.account-detail-row strong {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  color: var(--emerald-900);
+  letter-spacing: 0.06em;
+}
+
+.copy-status {
+  min-height: 1.2em;
+  margin: 12px 0 0;
+  color: var(--emerald-700);
+  font-weight: 700;
+}
+
+.whatsapp-community-card {
+  width: min(780px, 100%);
+  margin: 0 auto;
+  padding: 28px 22px;
+  background: linear-gradient(135deg, rgba(15, 90, 70, 0.96), rgba(38, 56, 34, 0.9));
+  border: 1px solid rgba(212, 175, 89, 0.7);
+  box-shadow: 0 18px 34px rgba(15, 75, 60, 0.2);
+}
+
+.whatsapp-community-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  color: var(--white);
+}
+
+.whatsapp-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #25d366, #1fa552);
+  color: var(--white);
+  font-weight: 900;
+  font-size: 1.2rem;
+}
+
+.whatsapp-community-header h3 {
+  margin: 0;
+  color: var(--white);
+}
+
+.whatsapp-community-header p {
+  margin: 4px 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 700;
+}
+
+.whatsapp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.dashboard-whatsapp-button,
+.dashboard-group-button {
+  text-transform: uppercase;
+  font-size: 0.76rem;
+}
+
+.contact-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.contact-card {
+  padding: 26px 24px;
+}
+
+.contact-logo {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  margin-bottom: 16px;
+  border-radius: 14px;
+}
+
+#uydnetComments {
+  margin-top: 16px;
+}
+
+.footer {
+  background: linear-gradient(135deg, rgba(11, 45, 31, 0.96), rgba(13, 62, 48, 0.96));
+  color: rgba(255, 255, 255, 0.9);
+  border-top: 1px solid rgba(212, 175, 89, 0.8);
+}
+
+.footer-inner {
+  width: min(1160px, calc(100% - 32px));
+  margin: 0 auto;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.socials {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(212, 175, 89, 0.15);
+  border: 1px solid rgba(212, 175, 89, 0.8);
+  color: var(--white);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+body.dashboard-open {
+  overflow: hidden;
+}
+
+.btn-plain {
+  color: var(--emerald-900);
+  background: linear-gradient(135deg, rgba(212, 175, 89, 0.12), rgba(19, 122, 95, 0.08));
+  border-color: rgba(19, 122, 95, 0.24);
+}
+
+.dashboard-section,
+.body-dashboard-open .overview-section {
+  display: none;
+}
+
+.dashboard-section.is-visible {
+  display: block;
+}
+
+.body-home-shown .overview-section {
+  display: block;
+}
+
+.return-home {
+  margin-top: 28px;
+}
+
+@media (max-width: 980px) {
+  .banner-shell {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .banner-divider {
+    display: none;
+  }
+
+  .site-header {
+    top: 164px;
+  }
+
+  .hero-inner,
+  .two-col,
+  .contact-grid,
+  .intro-grid,
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-menu-toggle {
+    top: calc(var(--banner-height) + 18px);
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    --banner-height: 176px;
+  }
+
+  .top-account-banner {
+    min-height: var(--banner-height);
+  }
+
+  .navwrap {
+    min-height: 78px;
+  }
+
+  .header-nav {
+    display: none;
+  }
+
+  .brand-text small {
+    display: none;
+  }
+
+  .hero {
+    padding-top: 60px;
+  }
+
+  .account-detail-row,
+  .whatsapp-community-header,
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dashboard-menu-toggle {
+    right: 14px;
+    top: calc(var(--banner-height) + 12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .whatsapp-banner-button,
+  .dashboard-whatsapp-button,
+  .dashboard-group-button,
+  .copy-account-button {
+    width: 100%;
+  }
+
+  .banner-row {
+    width: 100%;
+  }
+}
