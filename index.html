@@ -9,51 +9,731 @@
   <link rel="stylesheet" href="assistant.css">
   <style>
     :root{--navy:#0b3a7a;--green:#2e9f55;--teal:#16a7a7;--orange:#f28c28;--ink:#14233a;--muted:#607087;--line:#dce7e3;--white:#fff;--panel-w:min(360px,92vw)}
-    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;font:16px/1.6 Arial,Helvetica,sans-serif;color:var(--ink);background:#f7faf9}body.dashboard-open{overflow:hidden}img{max-width:100%;display:block}a{color:inherit;text-decoration:none}.container{width:min(1160px,calc(100% - 32px));margin:auto}
-    .site-header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.97);border-bottom:1px solid rgba(11,58,122,.08);backdrop-filter:blur(8px)}.navwrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:82px}.brand{display:flex;align-items:center;gap:12px}.brand img{width:56px;height:56px;object-fit:contain;border-radius:12px}.brand-text{display:flex;flex-direction:column;line-height:1.1;color:var(--navy)}.brand-text strong{font-size:clamp(1.2rem,2vw,1.75rem);letter-spacing:.04em}.brand-text small{color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em}.header-nav{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}.header-nav a{color:var(--navy);font-weight:600;font-size:.95rem;padding:8px 10px;border-radius:999px}.header-nav a:hover,.header-nav a:focus-visible{background:rgba(11,58,122,.08)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;font:16px/1.6 Arial,Helvetica,sans-serif;color:var(--ink);background:#f7faf9}body.dashboard-open{overflow:hidden}img{max-width:100%;display:block}a{color:inherit;text-decoration:none}.container{width:min(1160px,calc(100% - 32px));margin:0 auto}.site-header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.97);border-bottom:1px solid rgba(11,58,122,.08);backdrop-filter:blur(8px)}.navwrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:82px}.brand{display:flex;align-items:center;gap:12px}.brand img{width:56px;height:56px;object-fit:contain;border-radius:12px}.brand-text{display:flex;flex-direction:column;line-height:1.1;color:var(--navy)}.brand-text strong{font-size:clamp(1.2rem,2vw,1.75rem);letter-spacing:.04em}.brand-text small{color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em}.header-nav{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}.header-nav a{color:var(--navy);font-weight:600;font-size:.95rem;padding:8px 10px;border-radius:999px}.header-nav a:hover,.header-nav a:focus-visible{background:rgba(11,58,122,.08)}
     .dashboard-menu-toggle{position:fixed;top:18px;right:18px;width:52px;height:52px;border:0;border-radius:14px;background:linear-gradient(135deg,var(--navy),#0f4e9b);color:white;box-shadow:0 14px 28px rgba(11,58,122,.26);display:inline-flex;align-items:center;justify-content:center;z-index:1100;cursor:pointer}.dashboard-menu-toggle span{position:absolute;width:22px;height:3px;border-radius:99px;background:white;transition:transform .25s,opacity .2s}.dashboard-menu-toggle span:nth-child(1){transform:translateY(-7px)}.dashboard-menu-toggle span:nth-child(3){transform:translateY(7px)}.dashboard-menu-toggle[aria-expanded=true] span:nth-child(1){transform:rotate(45deg)}.dashboard-menu-toggle[aria-expanded=true] span:nth-child(2){opacity:0}.dashboard-menu-toggle[aria-expanded=true] span:nth-child(3){transform:rotate(-45deg)}
     .dashboard-backdrop{position:fixed;inset:0;background:rgba(7,19,39,.44);opacity:0;pointer-events:none;transition:opacity .25s;z-index:1000}.dashboard-backdrop.is-visible{opacity:1;pointer-events:auto}.dashboard-panel{position:fixed;top:0;right:0;width:var(--panel-w);height:100vh;background:#f5f9ff;box-shadow:-18px 0 30px rgba(7,19,39,.18);transform:translateX(105%);transition:transform .32s;z-index:1100;display:flex;flex-direction:column;border-left:1px solid rgba(11,58,122,.08)}.dashboard-panel.is-open{transform:translateX(0)}.dashboard-header{display:flex;align-items:center;justify-content:space-between;padding:18px;border-bottom:1px solid rgba(11,58,122,.08);background:linear-gradient(180deg,#fff,#f2f7ff)}.dashboard-brand{display:flex;align-items:center;gap:10px;color:var(--navy);font-weight:700}.dashboard-brand img{width:42px;height:42px;object-fit:contain}.dashboard-close{border:0;background:rgba(11,58,122,.08);width:40px;height:40px;border-radius:10px;color:var(--navy);font-size:1.5rem;cursor:pointer}.dashboard-nav{padding:10px 0 24px;overflow-y:auto;flex:1}.dashboard-item{display:flex;align-items:center;gap:14px;width:100%;padding:14px 18px;border:0;background:transparent;border-bottom:1px solid rgba(11,58,122,.07);color:var(--ink);font-size:1rem;font-weight:600;text-align:left;cursor:pointer}.dashboard-item:hover,.dashboard-item:focus-visible{background:rgba(11,58,122,.06)}.dashboard-icon{width:28px;height:28px;border-radius:8px;background:rgba(11,58,122,.08);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
-    .hero{background:linear-gradient(135deg,rgba(11,58,122,.97),rgba(22,167,167,.78)),url('uganda-flag.jpg') center/cover no-repeat;color:#fff}.hero-inner{width:min(1160px,calc(100% - 32px));margin:auto;padding:82px 0 48px;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:34px}.eyebrow{display:inline-block;font-size:.76rem;letter-spacing:.21em;text-transform:uppercase;padding:8px 14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;margin-bottom:18px}h1{font-size:clamp(2.4rem,5vw,4.3rem);line-height:1.08;margin:0 0 18px;letter-spacing:-.04em;color:#fff}h1 em{color:#ffdd8e;font-style:normal}.lead{max-width:620px;font-size:1.08rem;color:rgba(255,255,255,.9);margin-bottom:26px}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:999px;border:0;font-weight:700;cursor:pointer}.btn-primary{background:var(--orange);color:white}.btn-secondary{background:rgba(255,255,255,.12);color:white;border:1px solid rgba(255,255,255,.25)}.btn-plain{background:var(--navy);color:white}.hero-card{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:24px;padding:22px;backdrop-filter:blur(4px)}.hero-card h2{margin:0 0 12px;color:#fff}.hero-card ul{margin:0;padding-left:20px;display:grid;gap:10px;color:rgba(255,255,255,.92)}
-    .section{padding:64px 0}.section.tint{background:#edf5f1}.section.dark{background:#0d2340;color:#eaf3ff}.section-title{max-width:760px;margin:0 auto 28px;text-align:center}.section-title span{color:var(--orange);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:.75rem;display:block;margin-bottom:10px}.section-title h2{margin:0;font-size:clamp(2rem,3vw,2.8rem);color:var(--navy)}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.card,.info-box{background:white;border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 10px 24px rgba(11,58,122,.04)}.card small{display:block;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;font-weight:700}.card h3,.info-box h3{margin:0 0 12px;color:var(--navy)}.card p,.info-box p{margin:0 0 12px;color:var(--muted)}.two-col,.intro-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:center}.list{padding-left:20px;color:var(--muted);display:grid;gap:8px}.callout{margin:20px auto 0;background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:18px;padding:18px 20px;font-weight:600}.site-photo{width:100%;height:auto;max-height:650px;object-fit:contain;margin:26px auto;border-radius:12px}.photo-frame{width:min(1160px,calc(100% - 32px));margin:28px auto}.contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:24px}.contact-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:22px}.contact-card h3{color:white}.dark p,.dark li{color:rgba(255,255,255,.85)}.footer{background:#071d35;color:rgba(255,255,255,.8);padding:24px 0}.footer-inner{width:min(1160px,calc(100% - 32px));margin:auto;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}.socials{display:flex;gap:12px}.socials a{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);color:white;font-weight:700}
-    /* Keep the assistant behind the dashboard overlay/menu while the drawer is open. */
-    .uydnet-va-launcher{z-index:900!important}.uydnet-va-panel{z-index:901!important}
+    .hero{background:linear-gradient(135deg,rgba(11,58,122,.97),rgba(22,167,167,.78)),url('uganda-flag.jpg') center/cover no-repeat;color:#fff}.hero-inner{width:min(1160px,calc(100% - 32px));margin:0 auto;padding:82px 0 48px;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:34px}.eyebrow{display:inline-block;font-size:.76rem;letter-spacing:.21em;text-transform:uppercase;padding:8px 14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;margin-bottom:18px}h1{font-size:clamp(2.4rem,5vw,4.3rem);line-height:1.08;margin:0 0 18px;letter-spacing:-.04em;color:#fff}h1 em{color:#ffdd8e;font-style:normal}.lead{max-width:620px;font-size:1.08rem;color:rgba(255,255,255,.9);margin-bottom:26px}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:999px;border:0;font-weight:700;cursor:pointer}.btn-primary{background:var(--orange);color:white}.btn-secondary{background:rgba(255,255,255,.12);color:white;border:1px solid rgba(255,255,255,.25)}.btn-plain{background:var(--navy);color:white}.hero-card{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:24px;padding:22px;backdrop-filter:blur(4px)}.hero-card h2{margin:0 0 12px;color:#fff}.hero-card ul{margin:0;padding-left:20px;display:grid;gap:10px;color:rgba(255,255,255,.92)}
+    .section{padding:64px 0}.section.tint{background:#edf5f1}.section.dark{background:#0d2340;color:#eaf3ff}.section-title{max-width:760px;margin:0 auto 28px;text-align:center}.section-title span{color:var(--orange);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:.75rem;display:block;margin-bottom:10px}.section-title h2{margin:0;font-size:clamp(2rem,3vw,2.8rem);color:var(--navy)}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.card,.info-box{background:white;border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 10px 24px rgba(11,58,122,.04)}.card small{display:block;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;font-weight:700}.card h3,.info-box h3{margin:0 0 12px;color:var(--navy)}.card p,.info-box p{margin:0 0 12px;color:var(--muted)}.two-col,.intro-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:center}.list{padding-left:20px;color:var(--muted);display:grid;gap:8px}.callout{margin:20px auto 0;background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:18px;padding:18px 20px;font-weight:600}.site-photo{width:100%;height:auto;max-height:650px;object-fit:contain;margin:26px auto;border-radius:12px}.photo-frame{width:min(1160px,calc(100% - 32px));margin:28px auto}.contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:24px}.contact-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:22px}.contact-card h3{color:white}.dark p,.dark li{color:rgba(255,255,255,.85)}.footer{background:#071d35;color:rgba(255,255,255,.8);padding:24px 0}.footer-inner{width:min(1160px,calc(100% - 32px));margin:0 auto;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}.socials{display:flex;gap:12px}.socials a{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);color:white;font-weight:700}
+    .dashboard-section{display:none}.dashboard-section.is-visible{display:block}.body-home-shown .overview-section{display:block}.body-dashboard-open .overview-section{display:none}.dashboard-section .btn{margin-top:12px}.return-home{margin-top:18px}.dashboard-section .site-photo{max-height:520px}.uydnet-va-launcher,.uydnet-va-panel,.uydnet-va-panel *{box-sizing:border-box}.uydnet-va-launcher{position:fixed;right:24px;bottom:24px;z-index:10001;width:62px;height:62px;border:0;border-radius:50%;background:linear-gradient(135deg,#0b3a7a,#16a7a7);color:#fff;box-shadow:0 14px 30px rgba(11,58,122,.26);display:grid;place-items:center;cursor:pointer}.uydnet-va-panel{position:fixed;right:24px;bottom:92px;width:min(380px,calc(100vw - 24px));height:min(74dvh,650px);border-radius:22px;background:#fff;border:1px solid rgba(11,58,122,.08);box-shadow:0 18px 36px rgba(7,19,39,.18);display:flex;flex-direction:column;overflow:hidden;transform:translateY(20px);opacity:0;pointer-events:none;transition:transform .22s ease,opacity .22s ease}.uydnet-va-panel.is-open{transform:translateY(0);opacity:1;pointer-events:auto}.uydnet-va-head{display:flex;align-items:center;gap:12px;padding:14px 14px 10px;background:linear-gradient(135deg,#0b3a7a,#16a7a7);color:#fff;cursor:grab}.uydnet-va-avatar{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.12);display:grid;place-items:center}.uydnet-va-title{display:flex;flex-direction:column;line-height:1.2;flex:1;min-width:0}.uydnet-va-title strong{font-size:1rem}.uydnet-va-title span{font-size:.72rem;opacity:.8}.uydnet-va-head-actions{display:flex;align-items:center;gap:8px}.uydnet-va-icon{border:0;background:rgba(255,255,255,.12);color:#fff;border-radius:10px;width:30px;height:30px;display:grid;place-items:center;cursor:pointer}.uydnet-va-toolbar{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid rgba(11,58,122,.08);background:#f9fbfa;color:var(--muted);font-size:.76rem}.uydnet-va-toolbar button{border:0;padding:8px 10px;border-radius:999px;background:#eaf4ee;color:var(--navy);font-weight:600;cursor:pointer}.uydnet-va-messages{flex:1;overflow:auto;padding:10px 12px;background:#fbfdfc}.uydnet-va-row{display:flex;margin:8px 0}.uydnet-va-row.user{justify-content:flex-end}.uydnet-va-bubble{max-width:84%;padding:10px 12px;border-radius:14px;background:#edf5f1;color:var(--ink)}.uydnet-va-row.user .uydnet-va-bubble{background:#e7f5ee;color:#0d2d3c}.uydnet-va-meta{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:8px;color:var(--muted);font-size:.72rem}.uydnet-va-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.uydnet-va-links a{display:inline-block;background:#fff;border:1px solid rgba(11,58,122,.08);border-radius:999px;padding:6px 10px;font-size:.76rem;color:var(--navy);font-weight:600}.uydnet-va-composer{padding:10px 12px 12px;border-top:1px solid rgba(11,58,122,.08);background:#fff}.uydnet-va-controls{display:flex;align-items:flex-end;gap:8px}.uydnet-va-input{flex:1;border:1px solid rgba(11,58,122,.12);border-radius:12px;padding:10px 12px;resize:none;min-height:42px;max-height:100px;font:inherit}.uydnet-va-send{border:0;background:linear-gradient(135deg,#0b3a7a,#16a7a7);color:#fff;border-radius:12px;width:42px;height:42px;display:grid;place-items:center;cursor:pointer}.uydnet-va-mic{background:#eef5ef;color:var(--navy)}.uydnet-va-mic.is-listening{background:#ffe5df;color:#a4472a}.uydnet-va-live{min-height:20px;padding:0 2px 4px;color:var(--muted);font-size:.74rem}.uydnet-va-suggestions{display:flex;flex-wrap:wrap;gap:8px;padding:6px 0 0}.uydnet-va-suggestions button{background:#f3f8f5;border:1px solid rgba(11,58,122,.08);border-radius:999px;padding:8px 10px;color:var(--navy);font-size:.76rem;cursor:pointer}
     @media(max-width:900px){.header-nav{display:none}.hero-inner,.intro-grid,.two-col,.contact-grid,.grid-3{grid-template-columns:1fr}.section{padding:52px 0}.hero-inner{padding-top:76px}}@media(max-width:560px){.dashboard-menu-toggle{top:12px;right:12px}.hero-inner{padding-top:70px}.btn{width:100%}.hero-actions{display:grid;grid-template-columns:1fr}.brand-text small{display:none}.navwrap{min-height:72px}}
   </style>
 </head>
 <body>
-  <header class="site-header"><div class="container navwrap"><div class="brand" aria-label="UYDNet logo and brand"><img src="uydnet-logo.jpeg" alt="UYDNet organisation logo"><div class="brand-text"><strong>UYDNet</strong><small>Uganda Youth Development Network</small></div></div><nav class="header-nav" aria-label="Main navigation"><a href="#home">Home</a><a href="#about">About</a><a href="#programs">Programs</a><a href="#structure">Constitution</a><a href="#leadership">Leadership</a><a href="#news">News</a><a href="#membership">Membership</a><a href="#support">Support</a></nav></div></header>
-  <button class="dashboard-menu-toggle" type="button" aria-label="Open UYDNet dashboard navigation" aria-expanded="false" aria-controls="uydnetDashboard"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
+  <header class="site-header" aria-label="UYDNet header">
+    <div class="container navwrap">
+      <div class="brand" aria-label="UYDNet logo and brand">
+        <img src="uydnet-logo.jpeg" alt="UYDNet organisation logo">
+        <div class="brand-text">
+          <strong>UYDNet</strong>
+          <small>Uganda Youth Development Network</small>
+        </div>
+      </div>
+      <nav class="header-nav" aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#membership">Membership</a>
+        <a href="#support">Support</a>
+        <a href="#partner">Partner</a>
+      </nav>
+    </div>
+  </header>
+
+  <button class="dashboard-menu-toggle" type="button" aria-label="Open UYDNet dashboard navigation" aria-expanded="false" aria-controls="uydnetDashboard">
+    <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+  </button>
+
   <div class="dashboard-backdrop" id="dashboardBackdrop" aria-hidden="true"></div>
-  <aside class="dashboard-panel" id="uydnetDashboard" role="navigation" aria-label="UYDNet dashboard navigation" aria-hidden="true"><div class="dashboard-header"><div class="dashboard-brand"><img src="uydnet-logo.jpeg" alt="UYDNet logo"><span>UYDNet</span></div><button class="dashboard-close" type="button" aria-label="Close dashboard navigation">×</button></div><nav class="dashboard-nav" aria-label="Dashboard menu">
-    <button class="dashboard-item" type="button" data-target="#home"><span class="dashboard-icon">🏠</span>Home</button><button class="dashboard-item" type="button" data-target="#about"><span class="dashboard-icon">ℹ️</span>About UYDNet</button><button class="dashboard-item" type="button" data-target="#programs"><span class="dashboard-icon">📚</span>Programs &amp; Activities</button><button class="dashboard-item" type="button" data-target="#structure"><span class="dashboard-icon">🏛️</span>Constitution &amp; Structure</button><button class="dashboard-item" type="button" data-target="#leadership"><span class="dashboard-icon">👥</span>Leadership</button><button class="dashboard-item" type="button" data-target="#leadership"><span class="dashboard-icon">📜</span>Rules &amp; Regulations</button><button class="dashboard-item" type="button" data-target="#programs"><span class="dashboard-icon">📝</span>Proposals &amp; Projects</button><button class="dashboard-item" type="button" data-target="#news"><span class="dashboard-icon">📰</span>News &amp; Activities</button><button class="dashboard-item" type="button" data-target="#membership"><span class="dashboard-icon">🤝</span>Membership</button><button class="dashboard-item" type="button" data-target="#support"><span class="dashboard-icon">💛</span>Support UYDNet</button><button class="dashboard-item" type="button" data-target="#services"><span class="dashboard-icon">💼</span>Our Services</button><button class="dashboard-item" type="button" data-target="#partner"><span class="dashboard-icon">🤝</span>Become a Partner</button><button class="dashboard-item" type="button" data-target="#comments"><span class="dashboard-icon">💬</span>Comments &amp; Feedback</button>
-  </nav></aside>
+
+  <aside class="dashboard-panel" id="uydnetDashboard" role="navigation" aria-label="UYDNet dashboard navigation" aria-hidden="true">
+    <div class="dashboard-header">
+      <div class="dashboard-brand">
+        <img src="uydnet-logo.jpeg" alt="UYDNet logo">
+        <span>UYDNet</span>
+      </div>
+      <button class="dashboard-close" type="button" aria-label="Close dashboard navigation">×</button>
+    </div>
+    <nav class="dashboard-nav" aria-label="Dashboard menu">
+      <button class="dashboard-item" type="button" data-target="#home"><span class="dashboard-icon">🏠</span>Home</button>
+      <button class="dashboard-item" type="button" data-target="#about"><span class="dashboard-icon">ℹ️</span>About UYDNet</button>
+      <button class="dashboard-item" type="button" data-target="#programs-panel"><span class="dashboard-icon">📚</span>Programs &amp; Activities</button>
+      <button class="dashboard-item" type="button" data-target="#structure-panel"><span class="dashboard-icon">🏛️</span>Constitution &amp; Structure</button>
+      <button class="dashboard-item" type="button" data-target="#leadership-panel"><span class="dashboard-icon">👥</span>Leadership</button>
+      <button class="dashboard-item" type="button" data-target="#rules-panel"><span class="dashboard-icon">📜</span>Rules &amp; Regulations</button>
+      <button class="dashboard-item" type="button" data-target="#news-panel"><span class="dashboard-icon">📰</span>News &amp; Activities</button>
+      <button class="dashboard-item" type="button" data-target="#membership"><span class="dashboard-icon">🤝</span>Membership</button>
+      <button class="dashboard-item" type="button" data-target="#support"><span class="dashboard-icon">💛</span>Support UYDNet</button>
+      <button class="dashboard-item" type="button" data-target="#services"><span class="dashboard-icon">💼</span>Our Services</button>
+      <button class="dashboard-item" type="button" data-target="#partner"><span class="dashboard-icon">🤝</span>Become a Partner</button>
+      <button class="dashboard-item" type="button" data-target="#comments"><span class="dashboard-icon">💬</span>Comments &amp; Feedback</button>
+    </nav>
+  </aside>
+
   <main id="home">
-    <section class="hero"><div class="hero-inner"><div><span class="eyebrow">UGANDA YOUTH DEVELOPMENT NETWORK</span><h1>Connect. Equip. <em>Transform.</em></h1><p class="lead">A youth-development network connecting health, skills, leadership and community action to unlock opportunity and national progress.</p><div class="hero-actions"><a class="btn btn-primary" href="#membership">Join UYDNet</a><a class="btn btn-secondary" href="#support">Support UYDNet</a><a class="btn btn-secondary" href="#partner">Become a Partner</a></div></div><div class="hero-card"><h2>Why UYDNet matters</h2><ul><li><strong>Purpose:</strong> build opportunity, leadership and practical support for young people.</li><li><strong>Focus:</strong> youth development, health, skills, community action and partnership.</li><li><strong>Approach:</strong> programmes rooted in needs, assessment, action and results.</li></ul></div></div></section>
-    <div class="photo-frame"><img class="site-photo" src="empowered-youth.png" alt="Empowered Youth, Stronger Communities, A Brighter Uganda"></div>
-    <section class="section" id="about"><div class="container"><div class="section-title"><span>01</span><h2>About UYDNet &amp; the Founder's Story</h2></div><div class="intro-grid"><div class="info-box"><h3>Our mission</h3><p>To connect, equip and transform young people and communities through collaborative action, capacity building and practical support.</p></div><div class="info-box"><h3>From observation to organised action</h3><p>UYDNet responds to the realities affecting young people and communities through partnerships, community engagement and youth-centred programmes.</p></div></div></div></section>
-    <div class="photo-frame"><img class="site-photo" src="health-team.jpg" alt="Health professionals working together"></div>
-    <section class="section tint"><div class="container two-col"><div class="info-box"><h3>UYDNet in one minute</h3><p>UYDNet is a youth-development network bringing together young people, leaders, professionals and communities to improve wellbeing, skills, participation and opportunity.</p></div><div class="info-box"><h3>Our focus</h3><p>Leadership, health, education, skills, community action, employment and partnerships.</p></div></div></section>
-    <div class="photo-frame"><img class="site-photo" src="medical-group.jpg" alt="UYDNet Medical Group"></div>
-    <section class="section" id="identity"><div class="container"><div class="section-title"><span>02</span><h2>UYDNet at a Glance</h2></div><div class="grid-3"><article class="card"><small>Full name</small><p>Uganda Youth Development Network Organization</p></article><article class="card"><small>Focus</small><p>Youth development, leadership, health, skills and community transformation</p></article><article class="card"><small>Location</small><p>Mukono Central Division, Uganda</p></article></div></div></section>
-    <section class="section tint" id="objectives"><div class="container"><div class="section-title"><span>03</span><h2>Objectives &amp; Focus Areas</h2></div><p class="info-box">UYDNet promotes leadership, skills and education, health and wellbeing, community action, employment opportunities and partnerships for young people.</p></div></section>
-    <section class="section" id="programs"><div class="container"><div class="section-title"><span>04</span><h2>Programs &amp; Activities</h2></div><div class="grid-3"><article class="card"><h3>Leadership &amp; Civic Engagement</h3><p>Mobilise youth voices in governance, advocacy and local problem-solving.</p></article><article class="card"><h3>Health &amp; Social Support</h3><p>Promote awareness, prevention and support for health and wellbeing.</p></article><article class="card"><h3>Skills Development</h3><p>Support practical training, livelihoods and career readiness.</p></article><article class="card"><h3>Community Outreach</h3><p>Respond to local needs and shared challenges.</p></article><article class="card"><h3>Research &amp; Learning</h3><p>Generate evidence and learning for better action.</p></article><article class="card"><h3>Partnership-building</h3><p>Connect youth, institutions and communities to broaden opportunity.</p></article></div></div></section>
-    <div class="photo-frame"><img class="site-photo" src="Certificate.jpg" alt="UYDNet Certificate of Registration"></div>
-    <section class="section tint" id="structure"><div class="container"><div class="section-title"><span>05</span><h2>Constitutional Structure &amp; Strategic Plan</h2></div><div class="two-col"><div class="info-box"><h3>Governance</h3><ul class="list"><li>General Assembly</li><li>Board / Executive</li><li>Programme Units</li><li>Membership</li></ul></div><div class="info-box"><h3>Constitutional framework</h3><p>UYDNet's constitution supports oversight, strategic direction, accountability and programme implementation.</p></div></div></div></section>
-    <section class="section" id="leadership"><div class="container"><div class="section-title"><span>06</span><h2>Leadership, Rules &amp; Regulations</h2></div><div class="grid-3"><article class="card"><h3>Founder</h3><p>Provides vision and long-term direction.</p></article><article class="card"><h3>Leadership Team</h3><p>Coordinates planning, operations and programme implementation.</p></article><article class="card"><h3>Members</h3><p>Contribute ideas, participation and active engagement.</p></article></div></div></section>
-    <section class="section tint" id="news"><div class="container"><div class="section-title"><span>07</span><h2>News &amp; Activities</h2></div><div class="grid-3"><article class="card"><h3>Development priorities</h3><p>Programmes are shaped around youth needs and local realities.</p></article><article class="card"><h3>Community mobilisation</h3><p>Participation and collaborative action are central to the network's work.</p></article><article class="card"><h3>Shared progress</h3><p>Communities, leaders and youth achieve more by acting together.</p></article></div></div></section>
-    <section class="section" id="membership"><div class="container"><div class="section-title"><span>08</span><h2>Membership / Join UYDNet</h2></div><div class="two-col"><div class="info-box"><h3>Join the Network</h3><p>Membership welcomes individuals interested in youth development, professionals, volunteers, community actors and partners.</p><a class="btn btn-plain" href="UYDNet%20Membership%20Form.pdf" download>Download Membership Form (PDF)</a></div><div class="info-box"><h3>Submit your form</h3><p>Complete the form and submit it to the Vice President.</p><p>Call / WhatsApp: <a href="tel:+256755426832">+256 755 426 832</a></p><p><a href="https://wa.me/256755426832" target="_blank" rel="noopener">Message the Vice President on WhatsApp</a></p></div></div></div></section>
-    <section class="section tint" id="support"><div class="container"><div class="section-title"><span>09</span><h2>Support UYDNet</h2></div><div class="info-box"><p>Your support helps UYDNet continue empowering young people and supporting communities.</p><p><strong>Payment number:</strong> <a href="tel:+256744689594">+256 744 689 594</a></p><p><strong>Payment methods:</strong> MTN Mobile Money and Airtel Money. Please confirm the payment number and amount before completing your transaction.</p><a class="btn btn-plain" href="tel:*165*3%23">MTN Mobile Money</a></div></div></section>
-    <section class="section" id="services"><div class="container"><div class="section-title"><span>10</span><h2>UYDNet Services</h2></div><div class="grid-3"><article class="card"><h3>Paid Training</h3><p>Skills development and professional training.</p></article><article class="card"><h3>Consultation</h3><p>Development support for individuals, organisations and communities.</p></article><article class="card"><h3>Events &amp; Publications</h3><p>Workshops, seminars, reports and educational resources.</p></article></div></div></section>
-    <section class="section tint" id="partner"><div class="container"><div class="section-title"><span>11</span><h2>Become a Partner</h2></div><div class="info-box"><p>UYDNet welcomes organisations, institutions, development partners and individuals interested in creating meaningful opportunities for young people and communities.</p><p>Phone: <a href="tel:+256744689594">+256 744 689 594</a></p><a class="btn btn-plain" href="tel:+256744689594">Contact UYDNet to Partner</a></div></div></section>
-    <section class="section dark" id="contact"><div class="container contact-grid"><div class="contact-card"><img src="uydnet-logo.jpeg" alt="UYDNet logo" style="width:72px;height:72px;object-fit:contain;margin-bottom:16px"><h3>Connect with UYDNet</h3><p>For membership, partnerships, programmes and community collaboration.</p><p>Email: <a href="mailto:dabond9997@gmail.com">dabond9997@gmail.com</a><br>Phone: <a href="tel:+256744689594">+256 744 689 594</a></p></div><div class="contact-card" id="comments"><h3>Comments &amp; Feedback</h3><p>We would love to hear from you. Leave a comment or share feedback with UYDNet.</p><label>Name<input id="uydnetName" type="text" style="display:block;width:100%;padding:12px;margin:8px 0 14px"></label><label>Comment<textarea id="uydnetComment" rows="4" style="display:block;width:100%;padding:12px;margin:8px 0 14px"></textarea></label><button class="btn btn-primary" type="button" id="postComment">Post Comment</button><div id="uydnetComments" aria-live="polite"></div></div></div></section>
+    <section class="hero overview-section">
+      <div class="hero-inner">
+        <div>
+          <span class="eyebrow">UGANDA YOUTH DEVELOPMENT NETWORK</span>
+          <h1>Connect. Equip. <em>Transform.</em></h1>
+          <p class="lead">A youth-development network connecting health, skills, leadership and community action to unlock opportunity and national progress.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#membership">Join UYDNet</a>
+            <a class="btn btn-secondary" href="#support">Support UYDNet</a>
+            <a class="btn btn-secondary" href="#partner">Become a Partner</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <h2>Why UYDNet matters</h2>
+          <ul>
+            <li><strong>Purpose:</strong> build opportunity, leadership and practical support for young people.</li>
+            <li><strong>Focus:</strong> youth development, health, skills, community action and partnership.</li>
+            <li><strong>Approach:</strong> programmes rooted in needs, assessment, action and measurable results.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="photo-frame overview-section">
+      <img class="site-photo" src="empowered-youth.png" alt="Empowered Youth, Stronger Communities, A Brighter Uganda">
+    </div>
+
+    <section class="section overview-section" id="about">
+      <div class="container">
+        <div class="section-title">
+          <span>01</span>
+          <h2>About UYDNet &amp; the Founder's Story</h2>
+        </div>
+        <div class="intro-grid">
+          <div class="info-box">
+            <h3>Our mission</h3>
+            <p>To connect, equip and transform young people and communities through collaborative action, capacity building and practical support.</p>
+          </div>
+          <div class="info-box">
+            <h3>From observation to organised action</h3>
+            <p>UYDNet responds to the realities affecting young people and communities through partnerships, community engagement and youth-centred programmes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="photo-frame overview-section">
+      <img class="site-photo" src="health-team.jpg" alt="Health professionals working together">
+    </div>
+
+    <section class="section tint overview-section">
+      <div class="container two-col">
+        <div class="info-box">
+          <h3>UYDNet in one minute</h3>
+          <p>UYDNet is a youth-development network bringing together young people, leaders, professionals and communities to improve wellbeing, skills, participation and opportunity.</p>
+        </div>
+        <div class="info-box">
+          <h3>Our focus</h3>
+          <p>Leadership, health, education, skills, community action, employment and partnerships.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="photo-frame overview-section">
+      <img class="site-photo" src="medical-group.jpg" alt="UYDNet Medical Group">
+    </div>
+
+    <section class="section overview-section" id="identity">
+      <div class="container">
+        <div class="section-title">
+          <span>02</span>
+          <h2>UYDNet at a Glance</h2>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <small>Full name</small>
+            <p>Uganda Youth Development Network Organization</p>
+          </article>
+          <article class="card">
+            <small>Focus</small>
+            <p>Youth development, leadership, health, skills and community transformation</p>
+          </article>
+          <article class="card">
+            <small>Location</small>
+            <p>Mukono Central Division, Uganda</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tint overview-section" id="objectives">
+      <div class="container">
+        <div class="section-title">
+          <span>03</span>
+          <h2>Objectives &amp; Focus Areas</h2>
+        </div>
+        <p class="info-box">UYDNet promotes leadership, skills and education, health and wellbeing, community action, employment opportunities and partnerships for young people.</p>
+      </div>
+    </section>
+
+    <section class="section dashboard-section" id="programs-panel">
+      <div class="container">
+        <div class="section-title">
+          <span>Programs</span>
+          <h2>Programs &amp; Activities</h2>
+        </div>
+        <div class="photo-frame">
+          <img class="site-photo" src="empowered-youth.png" alt="Programmes and activities in youth development">
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <h3>Leadership &amp; Civic Engagement</h3>
+            <p>Mobilise youth voices in governance, advocacy and local problem-solving.</p>
+          </article>
+          <article class="card">
+            <h3>Health &amp; Social Support</h3>
+            <p>Promote awareness, prevention and support for health and wellbeing.</p>
+          </article>
+          <article class="card">
+            <h3>Skills Development</h3>
+            <p>Support practical training, livelihoods and career readiness.</p>
+          </article>
+          <article class="card">
+            <h3>Community Outreach</h3>
+            <p>Respond to local needs and shared challenges.</p>
+          </article>
+          <article class="card">
+            <h3>Research &amp; Learning</h3>
+            <p>Generate evidence and learning for better action.</p>
+          </article>
+          <article class="card">
+            <h3>Partnership-building</h3>
+            <p>Connect youth, institutions and communities to broaden opportunity.</p>
+          </article>
+        </div>
+        <button class="btn btn-plain return-home" type="button" data-return-home="true">Back to Overview</button>
+      </div>
+    </section>
+
+    <section class="section tint dashboard-section" id="structure-panel">
+      <div class="container">
+        <div class="section-title">
+          <span>Structure</span>
+          <h2>Constitutional Structure &amp; Strategic Plan</h2>
+        </div>
+        <div class="photo-frame">
+          <img class="site-photo" src="Certificate.jpg" alt="UYDNet certificate and constitution-related documentation">
+        </div>
+        <div class="two-col">
+          <div class="info-box">
+            <h3>Governance</h3>
+            <ul class="list">
+              <li>General Assembly</li>
+              <li>Board / Executive</li>
+              <li>Programme Units</li>
+              <li>Membership</li>
+            </ul>
+          </div>
+          <div class="info-box">
+            <h3>Constitutional framework</h3>
+            <p>UYDNet's constitution supports oversight, strategic direction, accountability and programme implementation.</p>
+          </div>
+        </div>
+        <button class="btn btn-plain return-home" type="button" data-return-home="true">Back to Overview</button>
+      </div>
+    </section>
+
+    <section class="section dashboard-section" id="leadership-panel">
+      <div class="container">
+        <div class="section-title">
+          <span>Leadership</span>
+          <h2>Leadership Roles &amp; Responsibilities</h2>
+        </div>
+        <div class="photo-frame">
+          <img class="site-photo" src="health-team.jpg" alt="UYDNet leadership and team work">
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <h3>Founder</h3>
+            <p>Provides vision and long-term direction for the organisation.</p>
+          </article>
+          <article class="card">
+            <h3>Leadership Team</h3>
+            <p>Coordinates planning, operations and programme implementation.</p>
+          </article>
+          <article class="card">
+            <h3>Members</h3>
+            <p>Contribute ideas, participation and active engagement across the network.</p>
+          </article>
+        </div>
+        <button class="btn btn-plain return-home" type="button" data-return-home="true">Back to Overview</button>
+      </div>
+    </section>
+
+    <section class="section tint dashboard-section" id="rules-panel">
+      <div class="container">
+        <div class="section-title">
+          <span>Rules</span>
+          <h2>Rules &amp; Regulations</h2>
+        </div>
+        <div class="photo-frame">
+          <img class="site-photo" src="medical-group.jpg" alt="UYDNet rules, regulations and operations image">
+        </div>
+        <div class="info-box">
+          <p>UYDNet operates through a clear framework of accountability, participation, governance and programme oversight. These rules support transparent decision-making, responsible action and respect for member participation.</p>
+          <ul class="list">
+            <li>Membership and participation standards</li>
+            <li>Respect for organisational procedures</li>
+            <li>Transparent governance and accountability</li>
+            <li>Responsible communication and programme conduct</li>
+          </ul>
+        </div>
+        <button class="btn btn-plain return-home" type="button" data-return-home="true">Back to Overview</button>
+      </div>
+    </section>
+
+    <section class="section dashboard-section" id="news-panel">
+      <div class="container">
+        <div class="section-title">
+          <span>News</span>
+          <h2>News &amp; Activities</h2>
+        </div>
+        <div class="photo-frame">
+          <img class="site-photo" src="uganda-flag.jpg" alt="UYDNet community activities and national development image">
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <h3>Development priorities</h3>
+            <p>Programmes are shaped around youth needs and local realities.</p>
+          </article>
+          <article class="card">
+            <h3>Community mobilisation</h3>
+            <p>Participation and collaborative action are central to the network's work.</p>
+          </article>
+          <article class="card">
+            <h3>Shared progress</h3>
+            <p>Communities, leaders and youth achieve more by acting together.</p>
+          </article>
+        </div>
+        <button class="btn btn-plain return-home" type="button" data-return-home="true">Back to Overview</button>
+      </div>
+    </section>
+
+    <section class="section overview-section" id="membership">
+      <div class="container">
+        <div class="section-title">
+          <span>08</span>
+          <h2>Membership / Join UYDNet</h2>
+        </div>
+        <div class="two-col">
+          <div class="info-box">
+            <h3>Join the Network</h3>
+            <p>Membership welcomes individuals interested in youth development, professionals, volunteers, community actors and partners.</p>
+            <a class="btn btn-plain" href="UYDNet%20Membership%20Form.pdf" download>Download Membership Form (PDF)</a>
+          </div>
+          <div class="info-box">
+            <h3>Submit your form</h3>
+            <p>Complete the form and submit it to the Vice President.</p>
+            <p>Call / WhatsApp: <a href="tel:+256755426832">+256 755 426 832</a></p>
+            <p><a href="https://wa.me/256755426832" target="_blank" rel="noopener">Message the Vice President on WhatsApp</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tint overview-section" id="support">
+      <div class="container">
+        <div class="section-title">
+          <span>09</span>
+          <h2>Support UYDNet</h2>
+        </div>
+        <div class="info-box">
+          <p>Your support helps UYDNet continue empowering young people and supporting communities.</p>
+          <p><strong>Payment number:</strong> <a href="tel:+256744689594">+256 744 689 594</a></p>
+          <p><strong>Payment methods:</strong> MTN Mobile Money and Airtel Money. Please confirm the payment number and amount before completing your transaction.</p>
+          <a class="btn btn-plain" href="tel:*165*3%23">MTN Mobile Money</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section overview-section" id="services">
+      <div class="container">
+        <div class="section-title">
+          <span>10</span>
+          <h2>UYDNet Services</h2>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <h3>Paid Training</h3>
+            <p>Skills development and professional training.</p>
+          </article>
+          <article class="card">
+            <h3>Consultation</h3>
+            <p>Development support for individuals, organisations and communities.</p>
+          </article>
+          <article class="card">
+            <h3>Events &amp; Publications</h3>
+            <p>Workshops, seminars, reports and educational resources.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tint overview-section" id="partner">
+      <div class="container">
+        <div class="section-title">
+          <span>11</span>
+          <h2>Become a Partner</h2>
+        </div>
+        <div class="info-box">
+          <p>UYDNet welcomes organisations, institutions, development partners and individuals interested in creating meaningful opportunities for young people and communities.</p>
+          <p>Phone: <a href="tel:+256744689594">+256 744 689 594</a></p>
+          <a class="btn btn-plain" href="tel:+256744689594">Contact UYDNet to Partner</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark overview-section" id="contact">
+      <div class="container contact-grid">
+        <div class="contact-card">
+          <img src="uydnet-logo.jpeg" alt="UYDNet logo" style="width:72px;height:72px;object-fit:contain;margin-bottom:16px;border-radius:14px;">
+          <h3>Connect with UYDNet</h3>
+          <p>For membership, partnerships, programmes and community collaboration.</p>
+          <p>Email: <a href="mailto:dabond9997@gmail.com">dabond9997@gmail.com</a><br>Phone: <a href="tel:+256744689594">+256 744 689 594</a></p>
+        </div>
+        <div class="contact-card" id="comments">
+          <h3>Comments &amp; Feedback</h3>
+          <p>We would love to hear from you. Leave a comment or share feedback with UYDNet.</p>
+          <label>
+            <span style="display:block;margin-bottom:10px;">Name</span>
+            <input id="uydnetName" type="text" style="display:block;width:100%;padding:12px;margin-bottom:14px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;">
+          </label>
+          <label>
+            <span style="display:block;margin-bottom:10px;">Comment</span>
+            <textarea id="uydnetComment" rows="4" style="display:block;width:100%;padding:12px;margin-bottom:14px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;resize:vertical;"></textarea>
+          </label>
+          <button class="btn btn-primary" type="button" id="postComment">Post Comment</button>
+          <div id="uydnetComments" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
   </main>
-  <footer class="footer"><div class="footer-inner"><span>© <span id="year">2026</span> Uganda Youth Development Network (UYDNet). Connect. Equip. Transform.</span><div class="socials" aria-label="Social media links"><a href="https://facebook.com" aria-label="Facebook">f</a><a href="https://x.com" aria-label="X">x</a><a href="https://linkedin.com" aria-label="LinkedIn">in</a></div></div></footer>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span>© <span id="year">2026</span> Uganda Youth Development Network (UYDNet). Connect. Equip. Transform.</span>
+      <div class="socials" aria-label="Social media links">
+        <a href="https://facebook.com" aria-label="Facebook">f</a>
+        <a href="https://x.com" aria-label="X">x</a>
+        <a href="https://linkedin.com" aria-label="LinkedIn">in</a>
+      </div>
+    </div>
+  </footer>
+
   <script>
-    const dashboardToggle=document.querySelector('.dashboard-menu-toggle');const dashboardPanel=document.getElementById('uydnetDashboard');const dashboardBackdrop=document.getElementById('dashboardBackdrop');const dashboardClose=document.querySelector('.dashboard-close');
-    function setDashboard(open){dashboardPanel.classList.toggle('is-open',open);dashboardBackdrop.classList.toggle('is-visible',open);dashboardToggle.setAttribute('aria-expanded',String(open));dashboardPanel.setAttribute('aria-hidden',String(!open));document.body.classList.toggle('dashboard-open',open)}
-    dashboardToggle.addEventListener('click',()=>setDashboard(dashboardToggle.getAttribute('aria-expanded')!=='true'));dashboardClose.addEventListener('click',()=>setDashboard(false));dashboardBackdrop.addEventListener('click',()=>setDashboard(false));document.querySelectorAll('.dashboard-item').forEach(item=>item.addEventListener('click',()=>{document.querySelector(item.dataset.target)?.scrollIntoView({behavior:'smooth',block:'start'});setDashboard(false)}));document.addEventListener('keydown',event=>{if(event.key==='Escape')setDashboard(false)});
-    document.getElementById('year').textContent=new Date().getFullYear();document.getElementById('postComment').addEventListener('click',()=>{const name=document.getElementById('uydnetName').value.trim();const text=document.getElementById('uydnetComment').value.trim();if(!name||!text){alert('Please enter your name and comment.');return}const item=document.createElement('div');const author=document.createElement('strong');author.textContent=name;const message=document.createElement('p');message.textContent=text;item.className='info-box';item.append(author,message);document.getElementById('uydnetComments').prepend(item);document.getElementById('uydnetName').value='';document.getElementById('uydnetComment').value=''})
+    const dashboardToggle = document.querySelector('.dashboard-menu-toggle');
+    const dashboardPanel = document.getElementById('uydnetDashboard');
+    const dashboardBackdrop = document.getElementById('dashboardBackdrop');
+    const dashboardClose = document.querySelector('.dashboard-close');
+    const dashboardSections = [...document.querySelectorAll('.dashboard-section')];
+    const overviewSections = [...document.querySelectorAll('.overview-section')];
+
+    function setDashboard(open) {
+      dashboardPanel.classList.toggle('is-open', open);
+      dashboardBackdrop.classList.toggle('is-visible', open);
+      dashboardToggle.setAttribute('aria-expanded', String(open));
+      dashboardPanel.setAttribute('aria-hidden', String(!open));
+      document.body.classList.toggle('dashboard-open', open);
+    }
+
+    function showOverview() {
+      dashboardSections.forEach((section) => section.classList.remove('is-visible'));
+      document.body.classList.remove('body-dashboard-open');
+      document.body.classList.add('body-home-shown');
+      overviewSections.forEach((section) => section.style.display = '');
+      const home = document.getElementById('home');
+      if (home) home.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function showDashboardSection(id) {
+      dashboardSections.forEach((section) => section.classList.toggle('is-visible', section.id === id));
+      overviewSections.forEach((section) => section.style.display = 'none');
+      document.body.classList.remove('body-home-shown');
+      document.body.classList.add('body-dashboard-open');
+      setDashboard(false);
+      const panel = document.getElementById(id);
+      if (panel) {
+        requestAnimationFrame(() => {
+          panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+    }
+
+    dashboardToggle.addEventListener('click', () => setDashboard(dashboardToggle.getAttribute('aria-expanded') !== 'true'));
+    dashboardClose.addEventListener('click', () => setDashboard(false));
+    dashboardBackdrop.addEventListener('click', () => setDashboard(false));
+
+    document.querySelectorAll('.dashboard-item').forEach((item) => {
+      item.addEventListener('click', () => {
+        const target = item.dataset.target;
+        if (!target) return;
+        if (target === '#home') {
+          showOverview();
+          return;
+        }
+        if (document.querySelector(target)?.classList.contains('dashboard-section')) {
+          showDashboardSection(target.replace('#', ''));
+          return;
+        }
+        const section = document.querySelector(target);
+        if (section) {
+          section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        setDashboard(false);
+      });
+    });
+
+    document.querySelectorAll('[data-return-home]').forEach((button) => {
+      button.addEventListener('click', () => {
+        showOverview();
+      });
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        setDashboard(false);
+        showOverview();
+      }
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('postComment').addEventListener('click', () => {
+      const name = document.getElementById('uydnetName').value.trim();
+      const text = document.getElementById('uydnetComment').value.trim();
+      if (!name || !text) {
+        alert('Please enter your name and comment.');
+        return;
+      }
+      const item = document.createElement('div');
+      item.style.marginTop = '14px';
+      item.style.padding = '12px 14px';
+      item.style.borderRadius = '12px';
+      item.style.background = '#fff';
+      item.style.color = '#14233a';
+      item.innerHTML = '<strong>' + name + '</strong><p style="margin:8px 0 0;">' + text + '</p>';
+      const container = document.getElementById('uydnetComments');
+      container.prepend(item);
+      document.getElementById('uydnetName').value = '';
+      document.getElementById('uydnetComment').value = '';
+    });
   </script>
   <script defer src="script.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
